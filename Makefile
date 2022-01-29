@@ -24,7 +24,7 @@ images-build:
 
 
 certs-create: prod-stop
-	UID=$(CURRENT_UID) GID=$(CURRENT_GID) $(COMPOSE) -f $(CERT_STACK) run --rm generator 
+	CURRENT_UID=$(CURRENT_UID) CURRENT_GID=$(CURRENT_GID) $(COMPOSE) -f $(CERT_STACK) run --rm generator 
 	bash $(NGINX_SSL)/generate-self-signed-cert.sh
 	bash $(KIBANA_SSL)/generate-self-signed-cert.sh
 
