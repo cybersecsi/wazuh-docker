@@ -1,5 +1,10 @@
 WAZUH_VERSION ?= 4.4.0-1
 WAZUH_KIBANA_VERSION ?= 4.4.0
+CURRENT_UID := $(shell id -u)
+CURRENT_GID := $(shell id -g)
+
+export CURRENT_UID
+export CURRENT_GID
 
 DEV_STACK = docker-compose.yml 
 PROD_STACK = production-cluster.yml
@@ -19,7 +24,7 @@ images-build:
 
 
 certs-create: prod-stop
-	$(COMPOSE) -f $(CERT_STACK) run --rm generator 
+	UID=$(CURRENT_UID) GID=$(CURRENT_GID) $(COMPOSE) -f $(CERT_STACK) run --rm generator 
 	bash $(NGINX_SSL)/generate-self-signed-cert.sh
 	bash $(KIBANA_SSL)/generate-self-signed-cert.sh
 
